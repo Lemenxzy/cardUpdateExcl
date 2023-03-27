@@ -1,0 +1,29 @@
+.container {
+  height: 100vh;
+  background: #111111;
+  justify-content: center;
+  align-items: center;
+  padding: 0 30px;
+  flex-direction: column;
+  display: flex;
+  .logo_warp {
+    padding: 10px;
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .logo_title {
+      margin-top: 30px;
+      font-size: 40px;
+      color: #fff;
+    }
+  }
+  .contentItem {
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    .borderContent {
+      padding: 40px 0;
+    }
+  }
+}

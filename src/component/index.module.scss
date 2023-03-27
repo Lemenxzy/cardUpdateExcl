@@ -1,0 +1,20 @@
+.listWrap {
+  padding: 0 10px;
+}
+.actStyle {
+  font-size: 24px;
+  padding: 10px 20px;
+  padding-top: 30px;
+}
+.customContent {
+  padding: 10px;
+}
+.contentext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  .remarks {
+    color: #fb6c6c;
+  }
+}

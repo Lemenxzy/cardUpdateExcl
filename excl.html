@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>卡方臣数据上传</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script type="text/javascript" lang="javascript"src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.1/xlsx.full.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $("#fileUploader").change(function(evt){
+        var selectedFile = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          var workbook = XLSX.read(event.target.result, {
+            type: "binary"
+          });
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          console.log('====>', first_sheet_name, workbook.Sheets, worksheet, XLSX.utils)
+
+          var _JsonData = XLSX.utils.sheet_to_json(worksheet, { raw: true, defval: "" });
+          /************************ End of conversion ************************/
+
+          const json = _JsonData.filter((item, index) => index !== 0);
+          const Obj = {
+            title: '__EMPTY_1',
+            subTitle: '__EMPTY_2',
+            guidePrice: '__EMPTY_5',
+            downPayments:'__EMPTY_20',
+            remarks: '__EMPTY_28',
+            36: '__EMPTY_24',
+            48: '__EMPTY_25',
+            60: '__EMPTY_26'
+          }
+          const data = json.map((item) => {
+            const newData = {}
+            Object.keys(item).forEach((key) => {
+              Object.keys(Obj).forEach((objKey) => {
+                if (key === Obj[objKey]) {
+                  newData[objKey] = item[key]
+                }
+              })
+            })
+            return newData;
+          }).filter((item) => item.title)
+
+          let link = document.createElement('a')
+          link.download = 'config.json'
+          link.href = 'data:text/plain,' + JSON.stringify(data)
+          link.click()
+        };
+        reader.readAsBinaryString(selectedFile);
+      });
+    });
+  </script>
+
+</head>
+<body>
+<h2>卡方臣数据上传：</h2>
+<div>
+  上传文件：<input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx"/>
+</div>
+<p style="color:red;">
+  上传完成后，会自动下载 config.json 文件, 将配置文件上传至
+  <a href="https://console.cloud.tencent.com/cos/bucket?bucket=kafangchengstatic-1317421607&region=ap-chongqing"
+     target="_blank">这里
+  </a>
+  点击上传，选择 config.json， 并且在 编辑参数设置 中选择 "公有读私有写"，再点击上传
+</p>
+</body>
+
+</html>
